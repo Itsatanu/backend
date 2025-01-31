@@ -66,7 +66,6 @@ const getAdmin = handler(async (req, res) => {
         const admins = await userModel.find({ role: 'admin' })
         return res.status(200).json(new apiResponce(201, admins, "Admin List"))
     } catch (error) {
-        console.log(error)
         return res.status(500).json(new apiError(500, "Internal server error"))
     }
 })
@@ -118,14 +117,12 @@ const tgWebhook = handler(async (req, res) => {
     }
     const chatId = update.message.chat.id;
     const message = update.message.text;
-    console.log(message)
     const Name = {
         firstName: update.message.chat.first_name || '',
         lastName: update.message.chat.last_name || '',
         userName: update.message.chat.username || ''
     }
 
-    console.log(userStates[chatId]?.waitingForPassword)
     if (userStates[chatId]?.waitingForPassword) {
         if (message === password) {
             // Password is correct
@@ -145,7 +142,6 @@ const tgWebhook = handler(async (req, res) => {
         }
         else {
             userStates[chatId] = { waitingForPassword: true };
-            console.log(userStates[chatId]?.waitingForPassword)
             await sendMessage(chatId, 'Please enter your password :');
         }
     }
@@ -189,7 +185,7 @@ const getUsersData = handler(async (req, res) => {
 
 
 const getUsersByFilter = handler(async (req, res) => {
-
+    
 })
 
 
